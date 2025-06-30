@@ -4,5 +4,17 @@
         "description": "Onion",
         "amount": 50,
         "date": "2025-06-30 21:11:50"
+    },
+    {
+        "id": 2,
+        "description": "Cake",
+        "amount": 120,
+        "date": "2025-06-30 21:27:23"
+    },
+    {
+        "id": 3,
+        "description": "ring",
+        "amount": 40,
+        "date": "2025-06-30 21:34:44"
     }
 ]

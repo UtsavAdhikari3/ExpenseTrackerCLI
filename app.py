@@ -37,6 +37,16 @@ def list_expense():
         for expense in expenses:
             print(f"{expense["id"]}     {expense["date"]}       {expense["description"]}           {expense["amount"]}")
 
+def summary():
+    expenses = load_expense()
+    add = 0
+    if not expenses:
+        print("No expenses found.")
+    for expense in expenses:
+        total = expense["amount"] + add
+        add = total
+    
+    print(f"Total expense: ${total}")
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -55,6 +65,9 @@ def build_parser() -> argparse.ArgumentParser:
     # List subcommand
     list_expenditure = sub.add_parser("list",help="List all your expenses")
 
+    # Summary submcommand
+    summarise_expense = sub.add_parser("summary",help="Get a total of all your expenses.")
+
     return parser  
 
 def main():
@@ -65,6 +78,8 @@ def main():
         add_expense(args.description, args.amount)
     elif args.command == "list":
         list_expense()
+    elif args.command == "summary":
+        summary()
 
 if __name__ == "__main__":
     main()
