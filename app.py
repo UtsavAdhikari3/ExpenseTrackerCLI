@@ -26,7 +26,17 @@ def add_expense(description, amount):
     }
     expenses.append(new_expense)
     save_expense(expenses)
-    print(f"Expense added successfully (ID: {new_id})") 
+    print(f"Expense added successfully (ID: {new_id})")
+
+def list_expense():
+    expenses = load_expense()
+    if not expenses:
+        print("No expense found.")
+    else:
+        print(f"id    date                      description     amount")
+        for expense in expenses:
+            print(f"{expense["id"]}     {expense["date"]}       {expense["description"]}           {expense["amount"]}")
+
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -39,7 +49,11 @@ def build_parser() -> argparse.ArgumentParser:
     # Add subcommand
     add = sub.add_parser("add", help="Add an expense")
     add.add_argument("--description", type=str, required=True, help="Description of the expense")
-    add.add_argument("--amount", type=int, required=True, help="Amount spent")  
+    add.add_argument("--amount", type=int, required=True, help="Amount spent")
+
+
+    # List subcommand
+    list_expenditure = sub.add_parser("list",help="List all your expenses")
 
     return parser  
 
@@ -49,6 +63,8 @@ def main():
 
     if args.command == "add":
         add_expense(args.description, args.amount)
+    elif args.command == "list":
+        list_expense()
 
 if __name__ == "__main__":
     main()
