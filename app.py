@@ -22,7 +22,7 @@ def add_expense(description, amount):
         "id": new_id,
         "description": description,
         "amount": amount,
-        "date": datetime.date.today().strftime("%Y-%m-%d")
+        "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
     }
     expenses.append(new_expense)
     save_expense(expenses)
@@ -37,15 +37,23 @@ def list_expense():
         for expense in expenses:
             print(f"{expense["id"]}     {expense["date"]}       {expense["description"]}           {expense["amount"]}")
 
-def summary():
+def summary(month_arg=None):
     expenses = load_expense()
-    add = 0
+    total = 0
+
     if not expenses:
         print("No expenses found.")
+        return
+
     for expense in expenses:
-        total = expense["amount"] + add
-        add = total
-    
+        if month_arg is None:
+            total += expense["amount"]
+        else:
+            month_arg = int(month_arg)
+            expense_parse = datetime.datetime.strptime(expense["date"], "%Y-%m-%d %H:%M:%S")
+            if expense_parse.month == month_arg:
+                total += expense["amount"]
+
     print(f"Total expense: ${total}")
 
 
@@ -76,6 +84,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     # Summary submcommand
     summarise_expense = sub.add_parser("summary",help="Get a total of all your expenses.")
+    summarise_expense.add_argument("--month",required=False,help="Get the expense of a particular month")
 
     # Delete Subcommand
     delete_expense = sub.add_parser("delete",help="Delete an expense")
@@ -92,7 +101,7 @@ def main():
     elif args.command == "list":
         list_expense()
     elif args.command == "summary":
-        summary()
+        summary(args.month)
     elif args.command == "delete":
         delete(args.id)
 
