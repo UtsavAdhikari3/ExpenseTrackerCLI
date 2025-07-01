@@ -22,7 +22,7 @@ def add_expense(description, amount):
         "id": new_id,
         "description": description,
         "amount": amount,
-        "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+        "date": datetime.date.today().strftime("%Y-%m-%d")
     }
     expenses.append(new_expense)
     save_expense(expenses)
