@@ -48,6 +48,15 @@ def summary():
     
     print(f"Total expense: ${total}")
 
+
+def delete(id):
+    expenses = load_expense()
+    for expense in expenses:
+        if expense["id"] == id:
+            expenses.remove(expense)
+            save_expense(expenses)
+    print(expenses)
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog='ExpenseTrackerCLI',
@@ -68,6 +77,10 @@ def build_parser() -> argparse.ArgumentParser:
     # Summary submcommand
     summarise_expense = sub.add_parser("summary",help="Get a total of all your expenses.")
 
+    # Delete Subcommand
+    delete_expense = sub.add_parser("delete",help="Delete an expense")
+    delete_expense.add_argument("--id",type=int, required=True,help="Enter the id of the expense you want to delete")
+
     return parser  
 
 def main():
@@ -80,6 +93,8 @@ def main():
         list_expense()
     elif args.command == "summary":
         summary()
+    elif args.command == "delete":
+        delete(args.id)
 
 if __name__ == "__main__":
     main()
